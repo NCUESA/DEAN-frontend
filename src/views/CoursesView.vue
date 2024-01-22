@@ -1,35 +1,37 @@
 <template>
     <h2 class="text-center">課程列表讀取需要時間，若十秒後仍未讀取完成，請直接刷新頁面。</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <td class="col-auto"><button type="button" class="btn btn-danger" @click="resetChart">重置課表</button></td>
-                <td>星期一</td>
-                <td>星期二</td>
-                <td>星期三</td>
-                <td>星期四</td>
-                <td>星期五</td>
-                <td>星期六</td>
-                <td>星期日</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="idx in 14" :key="idx">
-                <td>
-                    <div>{{ secs[idx - 1] }}</div>
-                    <div>{{ startTimes[idx - 1] }}</div>
-                    <div>{{ endTimes[idx - 1] }}</div>
-                </td>
-                <td v-for="i in 7">
-                    <div>{{ array2D[idx - 1][i - 1]?.course_id }}{{ array2D[idx - 1][i - 1]?.course_zh_name }}</div>
-                    <div v-if="array2D[idx - 1][i - 1] != null">{{ array2D[idx - 1][i - 1]?.course_credit }}學分</div>
-                    <div v-else>{{ array2D[idx - 1][i - 1] }}</div>
-                    <div>{{ array2D[idx - 1][i - 1]?.course_time_and_loc }}</div>
-                    <div>{{ array2D[idx - 1][i - 1]?.course_teacher_name }}</div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td><button type="button" class="btn btn-danger" @click="resetChart">重置課表</button></td>
+                    <td>星期一</td>
+                    <td>星期二</td>
+                    <td>星期三</td>
+                    <td>星期四</td>
+                    <td>星期五</td>
+                    <td>星期六</td>
+                    <td>星期日</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="idx in 14" :key="idx">
+                    <td>
+                        <div>{{ secs[idx - 1] }}</div>
+                        <div>{{ startTimes[idx - 1] }}</div>
+                        <div>{{ endTimes[idx - 1] }}</div>
+                    </td>
+                    <td v-for="i in 7">
+                        <div>{{ array2D[idx - 1][i - 1]?.course_id }}{{ array2D[idx - 1][i - 1]?.course_zh_name }}</div>
+                        <div v-if="array2D[idx - 1][i - 1] != null">{{ array2D[idx - 1][i - 1]?.course_credit }}學分</div>
+                        <div v-else>{{ array2D[idx - 1][i - 1] }}</div>
+                        <div>{{ array2D[idx - 1][i - 1]?.course_time_and_loc }}</div>
+                        <div>{{ array2D[idx - 1][i - 1]?.course_teacher_name }}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <form @submit.prevent="filter" @reset.prevent="resetQuery" class="mb-4">
         <h2 class="text-center">快速搜尋</h2>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
@@ -83,60 +85,62 @@
             </div>
         </div>
     </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="col-1">序號</th>
-                <th class="col-1">課程代碼</th>
-                <th class="col-1">開課班別</th>
-                <th class="col-1">課程名稱<br>及性質<br>及教學大綱</th>
-                <th class="col-1">全英語授課</th>
-                <th class="col-1">學分</th>
-                <th class="col-1">教師姓名</th>
-                <th class="col-1">上課大樓<br>及節次<br>及地點</th>
-                <th class="col-1">上限<br>登記<br>選上人數</th>
-                <th class="col-1">可跨班</th>
-                <th class="col-1">備註</th>
-                <th class="col-1">選取</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(course, idx) in viewData" :key="course.id">
-                <td>{{ idx + 1 }}</td>
-                <td>{{ course.course_id }}</td>
-                <td>{{ course.course_class }}</td>
-                <td>
-                    <div>{{ course.course_zh_name }}</div>
-                    <div>{{ course.course_en_name }}</div>
-                    <div><b>{{ course.course_type1 }}</b></div>
-                    <div><b>{{ course.course_type2 }}</b></div>
-                    <div>
-                        <a :href="course.course_syllabus" v-if="course.course_syllabus != ''">查看教學大綱</a>
-                    </div>
-                </td>
-                <td>{{ course.course_fully_eng ? "是" : "否" }}</td>
-                <td>{{ course.course_credit }}</td>
-                <td>
-                    <div v-if="course.course_teacher_link != ''"><a :href="course.course_teacher_link">{{
-                        course.course_teacher_name }}</a></div>
-                    <div></div>
-                </td>
-                <td>
-                    <div>{{ course.course_building }}</div>
-                    <div>{{ course.course_time_and_loc }}</div>
-                </td>
-                <td>
-                    <div>上限：{{ course.course_student_limit }}</div>
-                    <div>登記：{{ course.course_student_registered }}</div>
-                    <div>選上：{{ course.course_student_selected }}</div>
-                </td>
-                <td>{{ course.course_can_cross_class }}</td>
-                <td>{{ course.course_note }}</td>
-                <td><input type="checkbox" class="form-check" v-model="selected" :value="course"
-                        :disabled="(course.disabled as boolean)"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-1">序號</th>
+                    <th class="col-1">課程代碼</th>
+                    <th class="col-1">開課班別</th>
+                    <th class="col-1">課程名稱<br>及性質<br>及教學大綱</th>
+                    <th class="col-1">全英語授課</th>
+                    <th class="col-1">學分</th>
+                    <th class="col-1">教師姓名</th>
+                    <th class="col-1">上課大樓<br>及節次<br>及地點</th>
+                    <th class="col-1">上限<br>登記<br>選上人數</th>
+                    <th class="col-1">可跨班</th>
+                    <th class="col-1">備註</th>
+                    <th class="col-1">選取</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(course, idx) in viewData" :key="course.id">
+                    <td>{{ idx + 1 }}</td>
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.course_class }}</td>
+                    <td>
+                        <div>{{ course.course_zh_name }}</div>
+                        <div>{{ course.course_en_name }}</div>
+                        <div><b>{{ course.course_type1 }}</b></div>
+                        <div><b>{{ course.course_type2 }}</b></div>
+                        <div>
+                            <a :href="course.course_syllabus" v-if="course.course_syllabus != ''">查看教學大綱</a>
+                        </div>
+                    </td>
+                    <td>{{ course.course_fully_eng ? "是" : "否" }}</td>
+                    <td>{{ course.course_credit }}</td>
+                    <td>
+                        <div v-if="course.course_teacher_link != ''"><a :href="course.course_teacher_link">{{
+                            course.course_teacher_name }}</a></div>
+                        <div></div>
+                    </td>
+                    <td>
+                        <div>{{ course.course_building }}</div>
+                        <div>{{ course.course_time_and_loc }}</div>
+                    </td>
+                    <td>
+                        <div>上限：{{ course.course_student_limit }}</div>
+                        <div>登記：{{ course.course_student_registered }}</div>
+                        <div>選上：{{ course.course_student_selected }}</div>
+                    </td>
+                    <td>{{ course.course_can_cross_class }}</td>
+                    <td>{{ course.course_note }}</td>
+                    <td><input type="checkbox" class="form-check" v-model="selected" :value="course"
+                            :disabled="(course.disabled as boolean)"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script setup lang="ts">
