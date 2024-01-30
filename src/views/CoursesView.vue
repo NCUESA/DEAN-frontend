@@ -53,6 +53,7 @@
             <div class="col">
                 <label for="fully-eng-select" class="form-label">全英文授課</label>
                 <select id="fully-eng-select" class="form-select" v-model="query.course_fully_eng">
+                    <option :value="null" selected></option>
                     <option :value="true">是</option>
                     <option :value="false">否</option>
                 </select>
@@ -64,6 +65,7 @@
             <div class="col">
                 <label for="time-select" class="form-label">上課時間</label>
                 <select id="time-select" class="form-select" v-model="query.course_time">
+                    <option :value="null" selected></option>
                     <option :value="1">星期一</option>
                     <option :value="2">星期二</option>
                     <option :value="3">星期三</option>
@@ -198,40 +200,35 @@ const query = ref<CourseQuery>({
     course_time: null,
 });
 const transformQuery = () => {
-    if (query.value.course_class == "")
+    if (query.value.course_class === "")
         query.value.course_class = null;
-    if (query.value.course_id == "")
+    if (query.value.course_id === "")
         query.value.course_id = null;
-    if (query.value.course_name == "")
+    if (query.value.course_name === "")
         query.value.course_name = null;
-    if (query.value.course_teacher_name == "")
+    if (query.value.course_teacher_name === "")
         query.value.course_teacher_name = null;
+    if (query.value.course_time as unknown as string === "")
+        query.value.course_time = null;
 }
 const filter = () => {
     transformQuery();
     let filterArray = [...data.value];
-    if (query.value.course_class != null)
+    if (query.value.course_class !== null)
         filterArray = filterArray.filter((course) => { return course.course_class.includes(query.value.course_class as string) })
-    if (query.value.course_id != null)
+    if (query.value.course_id !== null)
         filterArray = filterArray.filter((course) => { return course.course_id.includes(query.value.course_id as string) })
-    if (query.value.course_name != null)
+    if (query.value.course_name !== null)
         filterArray = filterArray.filter((course) => { return course.course_zh_name.includes(query.value.course_name as string) })
-    if (query.value.course_teacher_name != null)
+    if (query.value.course_teacher_name !== null)
         filterArray = filterArray.filter((course) => { return course.course_teacher_name.includes(query.value.course_teacher_name as string) })
-    if (query.value.course_day_night != null)
+    if (query.value.course_day_night !== null)
         filterArray = filterArray.filter((course) => { return course.course_day_night === query.value.course_day_night })
-    if (query.value.course_fully_eng != null)
+    if (query.value.course_fully_eng !== null)
         filterArray = filterArray.filter((course) => { return course.course_fully_eng === query.value.course_fully_eng })
-    if (query.value.course_time != null) {
-        filterArray = filterArray.filter((course) => {
-            let b = false;
-            course.course_week_times.forEach((element) => {
-                if (query.value.course_time == element.week)
-                    b = true;
-            });
-            return b;
-        })
-    }
+    if (query.value.course_time !== null)
+        filterArray = filterArray.filter(course => course.course_week_times.filter(weekTime => weekTime.week == query.value.course_time).length > 0);
+    console.log(filterArray);
     viewData.value = [...filterArray];
 }
 const resetQuery = () => {
