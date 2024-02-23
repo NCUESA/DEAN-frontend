@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
 
 const options: RouterOptions = {
     routes: routes,
-    history: createWebHistory('/DEAN/'),
+    history: createWebHistory('/'),
 }
 
 export const router = createRouter(options);
